@@ -19,10 +19,10 @@
     }
     for ($pageno = 1 ; $pageno < 147; $pageno ++) {
         if(!file_exists('./new_mzitu'.$pageno.'/')){
-            mkdir('./new_mzitu'.$pageno.'/');
+            mkdir('./new_mzitu'.$pageno.'/');//按网站分页分存放目录
         }
         $check = getContent('http://www.mzitu.com/page/'.$pageno);
-        preg_match_all('/<li><a\shref=\"(.*?)\"\starget=\"_blank\"><img/',$check,$matches);
+        preg_match_all('/<li><a\shref=\"(.*?)\"\starget=\"_blank\"><img/',$check,$matches);//获得内容页链接
         foreach ($matches[1] as $url) {
             //echo $url;
             for ($i=1; $i < 100; $i++) { 
@@ -30,8 +30,7 @@
                 if($content===FALSE){
                     break;
                 }
-                preg_match_all('/<img\ssrc=\"(.*?)\"/',$content,$matche);
-                //preg_match_all('/class=\"joke-main-img\" src=\"(.*?)\"/',$content,$matches);
+                preg_match_all('/<img\ssrc=\"(.*?)\"/',$content,$matche);//获得图片链接
                 foreach ($matche[1] as $img_url) {
                     //echo $url.'<br>';
                     $img = getContent($img_url);
