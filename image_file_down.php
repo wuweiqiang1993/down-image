@@ -1,23 +1,5 @@
 #!G:\phpStudy\php\php-7.0.12-nts\php.exe -q
 <?php
-    function deleteAll($path) {
-        $op = dir($path);
-        while(false != ($item = $op->read())) {
-            if($item == '.' || $item == '..') {
-                continue;
-            }
-            if(is_dir($op->path.'/'.$item)) {
-                deleteAll($op->path.'/'.$item);
-                rmdir($op->path.'/'.$item);
-            } else {
-                unlink($op->path.'/'.$item);
-            }
-        
-        }   
-    }
-    if(file_exists('./new_mzitu1/')){
-        deleteAll('./new_mzitu1/');
-    } 
     function getContent($url, $method = 'GET', $postData = array()) {
         $curl = curl_init();
         curl_setopt ($curl, CURLOPT_URL, $url);
