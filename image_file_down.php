@@ -13,9 +13,10 @@
         return $content;
     }
     $STDOUT = fopen('php://stdout', 'w');
-    for ($pageno = 1 ; $pageno < 147; $pageno ++) {
+    fwrite($STDOUT," Start at ".date('Y-m-d H:i:s')."\n");
+    for ($pageno = 1 ; $pageno < 2; $pageno ++) {
         if(!file_exists('./new_mzitu'.$pageno.'/')){
-            mkdir('./new_mzitu'.$pageno.'/');
+            mkdir('./new_mzitu'.$pageno.'/',0777);
         }
         $check = getContent('http://www.mzitu.com/page/'.$pageno);
         preg_match_all('/<li><a\shref=\"(.*?)\"\starget=\"_blank\"><img/',$check,$matches);
@@ -32,13 +33,17 @@
                     //echo $url.'<br>';
                     $img = getContent($img_url);
                     if($img===FALSE){
-                        continue;
+                        break;
                     }
-                    file_put_contents('./new_mzitu'.$pageno.'/'.basename($img_url),$img);
-                    fwrite($STDOUT,basename($img_url)." Done\n");
+                    if(!file_exists('./new_mzitu'.$pageno.'/'.basename($img_url))){
+                        file_put_contents('./new_mzitu'.$pageno.'/'.basename($img_url),$img);
+                        fwrite($STDOUT,basename($img_url)." Done\n");
+                    }else{
+                        break;
+                    }
                 }
             }
         }
     }
-    fwrite($STDOUT,"All Done\n");
+    fwrite($STDOUT,"All Done at ".date('Y-m-d H:i:s')."\n");
     fclose($STDOUT);
